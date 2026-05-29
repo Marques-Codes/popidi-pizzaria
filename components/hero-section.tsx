@@ -5,21 +5,18 @@ import { useEffect, useState } from "react";
 const heroSlides = [
   {
     image: "/images/hero/pizza-hero-1.webp",
-    // label: "Sabor artesanal todos os dias",
-     title: "O sabor da pizza perfeita está aqui",
-     description:
+    title: "O sabor da pizza perfeita está aqui",
+    description:
       "Na Pópidi Pizzaria, cada pizza é preparada com massa artesanal, ingredientes frescos e aquele sabor que transforma qualquer momento em uma boa lembrança.",
   },
   {
     image: "/images/hero/pizza-hero-2.jpg",
-    // label: "Ingredientes selecionados",
     title: "Pizza feita com carinho e tradição",
     description:
       "Sabores clássicos e especiais preparados para quem valoriza qualidade, massa no ponto certo e aquele aroma de pizza saindo do forno.",
   },
   {
     image: "/images/hero/pizza-hero-3.jpg",
-    // label: "Momentos para compartilhar",
     title: "Peça sua pizza e aproveite melhor o dia",
     description:
       "Combos, pizzas salgadas, doces e bebidas para deixar seu pedido completo e perfeito para dividir com quem você gosta.",
@@ -66,8 +63,7 @@ export function HeroSection() {
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-6 pb-12 pt-32 sm:pt-36 lg:px-6">
-        <div className="max-w-xl md:max-w-2xl">
-
+        <div className="max-w-xl translate-y-50 md:max-w-2xl md:translate-y-0">
           <h1 className="max-w-xl text-[1.3rem] font-black leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
             {activeSlide.title}
           </h1>
