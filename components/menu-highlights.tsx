@@ -1,35 +1,37 @@
+import Image from "next/image";
+
 const menuItems = [
   {
     title: "Salgadas",
     description: "Clássicas e especiais para todos os gostos.",
     button: "Ver opções",
-    label: "PIZZA",
     href: "/cardapio/salgadas",
-    gradient: "from-red-950 via-red-800 to-orange-500",
+    image: "/images/menu/pizza-salgada.jpg",
+    alt: "Pizza salgada da Pópidi Pizzaria",
   },
   {
     title: "Doces",
     description: "Pizzas doces irresistíveis para adoçar seu dia.",
     button: "Ver opções",
-    label: "DOCE",
     href: "/cardapio/doces",
-    gradient: "from-stone-950 via-amber-950 to-yellow-700",
+    image: "/images/menu/pizza-doce.jpg",
+    alt: "Pizza doce da Pópidi Pizzaria",
   },
   {
     title: "Bebidas",
     description: "Refrigerantes, sucos e muito mais.",
     button: "Ver opções",
-    label: "DRINK",
     href: "/cardapio/bebidas",
-    gradient: "from-zinc-950 via-stone-800 to-amber-600",
+    image: "/images/menu/bebidas.webp",
+    alt: "Bebidas geladas da Pópidi Pizzaria",
   },
   {
     title: "Combos",
     description: "Combos completos para compartilhar e economizar.",
     button: "Ver opções",
-    label: "COMBO",
     href: "/cardapio/combos",
-    gradient: "from-red-950 via-black to-yellow-700",
+    image: "/images/menu/combo.jpg",
+    alt: "Combo de pizza da Pópidi Pizzaria",
   },
 ];
 
@@ -63,13 +65,19 @@ export function MenuHighlights() {
               key={item.title}
               className="overflow-hidden rounded-3xl border border-black/10 bg-white shadow-xl shadow-black/5 transition hover:-translate-y-1 hover:shadow-2xl"
             >
-              <div
-                className={`relative flex h-44 items-center justify-center bg-gradient-to-br ${item.gradient}`}
-              >
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,0.25),transparent_32%)]" />
+              <div className="relative h-44 overflow-hidden">
+                <Image
+                  src={item.image}
+                  alt={item.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  className="object-cover transition duration-500 hover:scale-110"
+                />
 
-                <div className="relative flex h-24 w-24 items-center justify-center rounded-full border-4 border-white/30 bg-black/25 text-sm font-black tracking-[0.18em] text-white shadow-2xl backdrop-blur">
-                  {item.label}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
+
+                <div className="absolute bottom-4 left-4 rounded-full bg-[#f5bf24] px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-black shadow-lg">
+                  {item.title}
                 </div>
               </div>
 

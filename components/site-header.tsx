@@ -5,32 +5,22 @@ import { useEffect, useState } from "react";
 const navItems = [
   {
     label: "Início",
-    href: "#inicio",
+    href: "/#inicio",
     sectionId: "inicio",
   },
   {
     label: "Cardápio",
-    href: "#cardapio",
+    href: "/#cardapio",
     sectionId: "cardapio",
   },
   {
     label: "Sobre Nós",
-    href: "#sobre-nos",
+    href: "/#sobre-nos",
     sectionId: "sobre-nos",
   },
   {
-    label: "Promoções",
-    href: "#promocoes",
-    sectionId: "promocoes",
-  },
-  {
-    label: "Galeria",
-    href: "#galeria",
-    sectionId: "galeria",
-  },
-  {
     label: "Contato",
-    href: "#contato",
+    href: "/#contato",
     sectionId: "contato",
   },
 ];
