@@ -63,12 +63,12 @@ export function HeroSection() {
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-6 pb-12 pt-32 sm:pt-36 lg:px-6">
-        <div className="max-w-xl translate-y-50 md:max-w-2xl md:translate-y-0">
-          <h1 className="max-w-xl text-[1.3rem] font-black leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+        <div className="max-w-xl translate-y-40 md:max-w-2xl md:translate-y-20">
+          <h1 className="max-w-xl text-[1.3rem] font-black leading-[1.05] tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
             {activeSlide.title}
           </h1>
 
-          <p className="mt-3 max-w-lg text-sm leading-6 text-white/75 sm:text-lg sm:leading-8">
+          <p className="mt-3 max-w-lg text-sm leading-6 text-white/75 sm:text-base sm:leading-7 md:text-lg md:leading-8">
             {activeSlide.description}
           </p>
 
@@ -77,14 +77,14 @@ export function HeroSection() {
               href="https://wa.me/5511987654321"
               target="_blank"
               rel="noreferrer"
-              className="rounded-full bg-[#23a334] px-6 py-3.5 text-center text-sm font-black text-white shadow-xl shadow-green-950/40 transition hover:scale-105 sm:px-8 sm:py-4 sm:text-base"
+              className="rounded-full bg-[#23a334] px-6 py-3.5 text-center text-sm font-black text-white shadow-xl shadow-green-950/40 transition hover:scale-105 sm:px-7 sm:py-3.5 sm:text-sm md:px-8 md:py-4 md:text-base"
             >
               Pedir pelo WhatsApp
             </a>
 
             <a
               href="#cardapio"
-              className="rounded-full border border-white/25 px-6 py-3.5 text-center text-sm font-bold text-white transition hover:border-[#f5bf24] hover:text-[#f5bf24] sm:px-8 sm:py-4 sm:text-base"
+              className="rounded-full border border-white/25 px-6 py-3.5 text-center text-sm font-bold text-white transition hover:border-[#f5bf24] hover:text-[#f5bf24] sm:px-7 sm:py-3.5 sm:text-sm md:px-8 md:py-4 md:text-base"
             >
               Ver cardápio
             </a>
