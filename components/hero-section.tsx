@@ -62,35 +62,35 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_35%,rgba(245,191,36,0.22),transparent_32%),radial-gradient(circle_at_35%_75%,rgba(178,15,24,0.18),transparent_35%)]" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-6 pb-12 pt-32 sm:pt-36 lg:px-6">
-        <div className="max-w-xl translate-y-40 md:max-w-2xl md:translate-y-20">
-          <h1 className="max-w-xl text-[1.3rem] font-black leading-[1.05] tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
+      <div className="relative z-10 flex min-h-screen w-full items-center justify-start px-5 pb-12 pt-32 sm:px-10 sm:pt-36 lg:px-16">
+        <div className="max-w-xl translate-y-40 text-left md:max-w-2xl md:translate-y-20">
+          <h1 className="max-w-xl text-left text-[1.3rem] font-black leading-[1.05] tracking-tight text-white sm:text-4xl md:text-5xl lg:text-3xl">
             {activeSlide.title}
           </h1>
 
-          <p className="mt-3 max-w-lg text-sm leading-6 text-white/75 sm:text-base sm:leading-7 md:text-lg md:leading-8">
+          <p className="mt-3 max-w-lg text-left text-sm leading-6 text-white/75 sm:text-base sm:leading-7 md:text-lg md:leading-8">
             {activeSlide.description}
           </p>
 
-          <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:gap-4">
+          <div className="mt-3 flex flex-col items-start gap-3 sm:flex-row sm:gap-4">
             <a
               href="https://wa.me/5511987654321"
               target="_blank"
               rel="noreferrer"
-              className="rounded-full bg-[#23a334] px-6 py-3.5 text-center text-sm font-black text-white shadow-xl shadow-green-950/40 transition hover:scale-105 sm:px-7 sm:py-3.5 sm:text-sm md:px-8 md:py-4 md:text-base"
+              className="inline-flex rounded-full bg-[#23a334] px-6 py-3.5 text-center text-sm font-black text-white shadow-xl shadow-green-950/40 transition hover:scale-105 sm:px-7 sm:py-3.5 sm:text-sm md:px-8 md:py-4 md:text-base"
             >
               Pedir pelo WhatsApp
             </a>
 
             <a
               href="#cardapio"
-              className="rounded-full border border-white/25 px-6 py-3.5 text-center text-sm font-bold text-white transition hover:border-[#f5bf24] hover:text-[#f5bf24] sm:px-7 sm:py-3.5 sm:text-sm md:px-8 md:py-4 md:text-base"
+              className="inline-flex rounded-full border border-white/25 px-6 py-3.5 text-center text-sm font-bold text-white transition hover:border-[#f5bf24] hover:text-[#f5bf24] sm:px-7 sm:py-3.5 sm:text-sm md:px-8 md:py-4 md:text-base"
             >
               Ver cardápio
             </a>
           </div>
 
-          <div className="mt-8 flex items-center gap-3 sm:mt-10">
+          <div className="mt-8 flex items-center justify-start gap-3 sm:mt-10">
             {heroSlides.map((slide, index) => (
               <button
                 key={slide.image}
