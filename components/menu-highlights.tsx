@@ -4,6 +4,7 @@ const menuItems = [
     description: "Clássicas e especiais para todos os gostos.",
     button: "Ver opções",
     label: "PIZZA",
+    href: "/cardapio/salgadas",
     gradient: "from-red-950 via-red-800 to-orange-500",
   },
   {
@@ -11,6 +12,7 @@ const menuItems = [
     description: "Pizzas doces irresistíveis para adoçar seu dia.",
     button: "Ver opções",
     label: "DOCE",
+    href: "/cardapio/doces",
     gradient: "from-stone-950 via-amber-950 to-yellow-700",
   },
   {
@@ -18,6 +20,7 @@ const menuItems = [
     description: "Refrigerantes, sucos e muito mais.",
     button: "Ver opções",
     label: "DRINK",
+    href: "/cardapio/bebidas",
     gradient: "from-zinc-950 via-stone-800 to-amber-600",
   },
   {
@@ -25,13 +28,17 @@ const menuItems = [
     description: "Combos completos para compartilhar e economizar.",
     button: "Ver opções",
     label: "COMBO",
+    href: "/cardapio/combos",
     gradient: "from-red-950 via-black to-yellow-700",
   },
 ];
 
 export function MenuHighlights() {
   return (
-    <section id="cardapio" className="scroll-mt-28 bg-[#fff8ed] px-6 py-20">
+    <section
+      id="cardapio"
+      className="scroll-mt-28 bg-[#fff8ed] px-6 py-20"
+    >
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 text-center">
           <div className="mx-auto mb-4 h-px w-24 bg-[#f5bf24]" />
@@ -76,7 +83,7 @@ export function MenuHighlights() {
                 </p>
 
                 <a
-                  href="#"
+                  href={item.href}
                   className="mt-6 inline-flex rounded-full bg-[#f5bf24] px-5 py-2 text-sm font-black text-black transition hover:bg-[#e0aa13]"
                 >
                   {item.button}
