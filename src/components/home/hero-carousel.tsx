@@ -1,14 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { HeroCarouselSlide } from "@/data/hero-carousel-slides";
+import { getActiveHeroCarouselSlides } from "@/lib/hero-carousel-storage";
 
-const heroImages = [
-  "/images/hero/pizza-hero-1.webp",
-  "/images/hero/pizza-hero-2.jpg",
-  "/images/hero/pizza-hero-3.jpg",
-];
+type HeroCarouselProps = {
+  slides: HeroCarouselSlide[];
+};
 
-export function HeroCarousel() {
+export function HeroCarousel({ slides: initialSlides }: HeroCarouselProps) {
+  const slides = useMemo(() => {
+    return getActiveHeroCarouselSlides(initialSlides);
+  }, [initialSlides]);
+
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   useEffect(() => {
@@ -16,7 +20,7 @@ export function HeroCarousel() {
       setActiveImageIndex((currentIndex) => {
         const nextIndex = currentIndex + 1;
 
-        if (nextIndex >= heroImages.length) {
+        if (nextIndex >= slides.length) {
           return 0;
         }
 
@@ -25,21 +29,21 @@ export function HeroCarousel() {
     }, 3000);
 
     return () => window.clearInterval(interval);
-  }, []);
+  }, [slides.length]);
 
   return (
     <section
       id="inicio"
       className="relative flex min-h-[calc(100vh-80px)] items-center justify-center overflow-hidden px-6 text-center"
     >
-      {heroImages.map((image, index) => (
+      {slides.map((slide, index) => (
         <div
-          key={image}
+          key={slide.id}
           className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
             index === activeImageIndex ? "opacity-100" : "opacity-0"
           }`}
           style={{
-            backgroundImage: `url(${image})`,
+            backgroundImage: `url(${slide.image})`,
           }}
         />
       ))}
@@ -71,9 +75,9 @@ export function HeroCarousel() {
       </div>
 
       <div className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-        {heroImages.map((image, index) => (
+        {slides.map((slide, index) => (
           <button
-            key={image}
+            key={slide.id}
             type="button"
             aria-label={`Ir para imagem ${index + 1}`}
             onClick={() => setActiveImageIndex(index)}

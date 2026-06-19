@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 
 const whatsappNumber = "5543999384998";
@@ -10,6 +13,12 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
 )}`;
 
 export function FloatingWhatsAppButton() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <a
       href={whatsappUrl}
