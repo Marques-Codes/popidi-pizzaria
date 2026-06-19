@@ -1,6 +1,6 @@
 import { FaWhatsapp } from "react-icons/fa";
 
-const whatsappNumber = "554330553535";
+const whatsappNumber = "5543999384998";
 
 const whatsappMessage =
   "Olá! Vim pelo site da Popidi Pizzaria e gostaria de fazer um pedido.";
