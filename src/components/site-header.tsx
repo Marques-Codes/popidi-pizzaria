@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+const orderUrl = "https://pratodigital.com.br/pizzariapopidi/#/&s=4akMkWVkuI";
+
 export function SiteHeader() {
   return (
     <header className="fixed left-0 top-0 z-50 w-full bg-[#6f1018]">
@@ -32,12 +34,14 @@ export function SiteHeader() {
           </Link>
         </nav>
 
-        <Link
-          href="/#contato"
+        <a
+          href={orderUrl}
+          target="_blank"
+          rel="noreferrer"
           className="rounded-md bg-yellow-400 px-5 py-3 text-sm font-bold text-black transition hover:bg-yellow-300"
         >
-          Peça Agora
-        </Link>
+          Faça o seu pedido
+        </a>
       </div>
     </header>
   );
