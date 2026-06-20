@@ -1,26 +1,39 @@
-import { list, put } from "@vercel/blob";
 import {
   defaultHeroCarouselSlides,
   type HeroCarouselSlide,
 } from "@/data/hero-carousel-slides";
+import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
-const carouselConfigPath = "config/hero-carousel-slides.json";
+type HeroCarouselSlideRow = {
+  id: string;
+  title: string;
+  alt: string;
+  image_url: string;
+  is_active: boolean;
+  display_order: number;
+};
 
-function isValidSlide(slide: unknown): slide is HeroCarouselSlide {
-  if (!slide || typeof slide !== "object") {
-    return false;
-  }
+function mapRowToSlide(row: HeroCarouselSlideRow): HeroCarouselSlide {
+  return {
+    id: row.id,
+    title: row.title,
+    alt: row.alt,
+    image: row.image_url,
+    isActive: row.is_active,
+    order: row.display_order,
+  };
+}
 
-  const item = slide as HeroCarouselSlide;
-
-  return (
-    typeof item.id === "string" &&
-    typeof item.title === "string" &&
-    typeof item.image === "string" &&
-    typeof item.alt === "string" &&
-    typeof item.isActive === "boolean" &&
-    typeof item.order === "number"
-  );
+function mapSlideToRow(slide: HeroCarouselSlide) {
+  return {
+    id: slide.id,
+    title: slide.title,
+    alt: slide.alt,
+    image_url: slide.image,
+    is_active: slide.isActive,
+    display_order: slide.order,
+    updated_at: new Date().toISOString(),
+  };
 }
 
 export function sortHeroCarouselSlides(slides: HeroCarouselSlide[]) {
@@ -42,51 +55,54 @@ export function getActiveHeroCarouselSlides(slides: HeroCarouselSlide[]) {
 
 export async function getHeroCarouselSlides() {
   try {
-    const result = await list({
-      prefix: carouselConfigPath,
-      limit: 1,
-    });
+    const supabase = getSupabaseAdminClient();
 
-    const configBlob = result.blobs.find(
-      (blob) => blob.pathname === carouselConfigPath,
-    );
+    const { data, error } = await supabase
+      .from("hero_carousel_slides")
+      .select("id,title,alt,image_url,is_active,display_order")
+      .order("display_order", { ascending: true })
+      .order("created_at", { ascending: true });
 
-    if (!configBlob) {
+    if (error) {
+      console.error("Erro ao buscar carrossel no Supabase:", error.message);
       return defaultHeroCarouselSlides;
     }
 
-    const response = await fetch(`${configBlob.url}?v=${Date.now()}`, {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
+    if (!data || data.length === 0) {
       return defaultHeroCarouselSlides;
     }
 
-    const data = await response.json();
-
-    if (!Array.isArray(data)) {
-      return defaultHeroCarouselSlides;
-    }
-
-    const validSlides = data.filter(isValidSlide);
-
-    if (validSlides.length === 0) {
-      return defaultHeroCarouselSlides;
-    }
-
-    return validSlides;
-  } catch {
+    return data.map((row) => mapRowToSlide(row as HeroCarouselSlideRow));
+  } catch (error) {
+    console.error("Erro inesperado ao buscar carrossel:", error);
     return defaultHeroCarouselSlides;
   }
 }
 
 export async function saveHeroCarouselSlides(slides: HeroCarouselSlide[]) {
-  const orderedSlides = sortHeroCarouselSlides(slides);
+  const supabase = getSupabaseAdminClient();
 
-  await put(carouselConfigPath, JSON.stringify(orderedSlides, null, 2), {
-    access: "public",
-    allowOverwrite: true,
-    contentType: "application/json",
-  });
+  const orderedSlides = sortHeroCarouselSlides(slides);
+  const rows = orderedSlides.map(mapSlideToRow);
+
+  const { error } = await supabase
+    .from("hero_carousel_slides")
+    .upsert(rows, { onConflict: "id" });
+
+  if (error) {
+    throw new Error(`Erro ao salvar carrossel no Supabase: ${error.message}`);
+  }
+}
+
+export async function deleteHeroCarouselSlideRecord(slideId: string) {
+  const supabase = getSupabaseAdminClient();
+
+  const { error } = await supabase
+    .from("hero_carousel_slides")
+    .delete()
+    .eq("id", slideId);
+
+  if (error) {
+    throw new Error(`Erro ao remover slide do Supabase: ${error.message}`);
+  }
 }

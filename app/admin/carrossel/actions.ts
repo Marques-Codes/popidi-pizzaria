@@ -5,6 +5,7 @@ import { del, put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
+  deleteHeroCarouselSlideRecord,
   getHeroCarouselSlides,
   saveHeroCarouselSlides,
   sortHeroCarouselSlides,
@@ -152,8 +153,7 @@ export async function updateHeroCarouselSlide(formData: FormData) {
       try {
         await del(targetSlide.image);
       } catch {
-        // Se falhar, apenas mantemos o arquivo antigo no Blob.
-        // Depois podemos criar limpeza manual de arquivos órfãos.
+        // Mantém o fluxo mesmo se a exclusão da imagem antiga falhar.
       }
     }
   }
@@ -242,6 +242,7 @@ export async function deleteHeroCarouselSlide(formData: FormData) {
     }
   }
 
+  await deleteHeroCarouselSlideRecord(slideId);
   await saveHeroCarouselSlides(normalizeOrder(remainingSlides));
 
   revalidateCarouselPages();
@@ -258,7 +259,12 @@ export async function moveHeroCarouselSlide(formData: FormData) {
   }
 
   const slides = await getHeroCarouselSlides();
-  const orderedSlides = normalizeOrder(slides);
+
+  const orderedSlides = sortHeroCarouselSlides(slides).map((slide, index) => ({
+    ...slide,
+    order: index + 1,
+  }));
+
   const currentIndex = orderedSlides.findIndex((slide) => slide.id === slideId);
 
   if (currentIndex === -1) {
@@ -272,13 +278,19 @@ export async function moveHeroCarouselSlide(formData: FormData) {
   }
 
   const reorderedSlides = [...orderedSlides];
+
   const currentSlide = reorderedSlides[currentIndex];
   const targetSlide = reorderedSlides[targetIndex];
 
   reorderedSlides[currentIndex] = targetSlide;
   reorderedSlides[targetIndex] = currentSlide;
 
-  await saveHeroCarouselSlides(normalizeOrder(reorderedSlides));
+  const slidesWithUpdatedOrder = reorderedSlides.map((slide, index) => ({
+    ...slide,
+    order: index + 1,
+  }));
+
+  await saveHeroCarouselSlides(slidesWithUpdatedOrder);
 
   revalidateCarouselPages();
 

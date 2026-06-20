@@ -9,7 +9,7 @@ export type HeroCarouselSlide = {
 
 export const defaultHeroCarouselSlides: HeroCarouselSlide[] = [
   {
-    id: "hero-1",
+    id: "00000000-0000-4000-8000-000000000001",
     title: "Pizza artesanal",
     image: "/images/hero/pizza-hero-1.webp",
     alt: "Pizza artesanal da Popidi Pizzaria",
@@ -17,7 +17,7 @@ export const defaultHeroCarouselSlides: HeroCarouselSlide[] = [
     order: 1,
   },
   {
-    id: "hero-2",
+    id: "00000000-0000-4000-8000-000000000002",
     title: "Pizza com queijo puxando",
     image: "/images/hero/pizza-hero-2.jpg",
     alt: "Pizza com queijo derretido",
@@ -25,7 +25,7 @@ export const defaultHeroCarouselSlides: HeroCarouselSlide[] = [
     order: 2,
   },
   {
-    id: "hero-3",
+    id: "00000000-0000-4000-8000-000000000003",
     title: "Pizza especial",
     image: "/images/hero/pizza-hero-3.jpg",
     alt: "Pizza especial da Popidi",
