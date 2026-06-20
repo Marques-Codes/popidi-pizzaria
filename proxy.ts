@@ -1,22 +1,23 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { adminAuthCookieName, verifyAdminToken } from "@/lib/admin-auth";
+import { NextRequest, NextResponse } from "next/server";
+import { ADMIN_AUTH_COOKIE_NAME, verifyAdminToken } from "@/lib/admin-auth";
 
 export async function proxy(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
+  const { pathname, search } = request.nextUrl;
+
+  if (!pathname.startsWith("/admin")) {
+    return NextResponse.next();
+  }
 
   if (pathname === "/admin/login") {
     return NextResponse.next();
   }
 
-  const token = request.cookies.get(adminAuthCookieName)?.value;
+  const token = request.cookies.get(ADMIN_AUTH_COOKIE_NAME)?.value;
   const isAuthenticated = await verifyAdminToken(token);
 
   if (!isAuthenticated) {
-    const loginUrl = request.nextUrl.clone();
-
-    loginUrl.pathname = "/admin/login";
-    loginUrl.searchParams.set("next", pathname);
+    const loginUrl = new URL("/admin/login", request.url);
+    loginUrl.searchParams.set("next", `${pathname}${search}`);
 
     return NextResponse.redirect(loginUrl);
   }

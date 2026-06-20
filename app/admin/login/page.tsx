@@ -5,12 +5,41 @@ type AdminLoginPageProps = {
   }>;
 };
 
+function getLoginErrorMessage(error?: string) {
+  if (error === "invalid" || error === "1") {
+    return "Usuário ou senha incorretos. Tente novamente.";
+  }
+
+  if (error === "server") {
+    return "As variáveis de login não estão configuradas corretamente no servidor.";
+  }
+
+  return null;
+}
+
+function getSafeNextPath(nextPath?: string) {
+  if (!nextPath) {
+    return "/admin";
+  }
+
+  if (!nextPath.startsWith("/")) {
+    return "/admin";
+  }
+
+  if (nextPath.startsWith("//")) {
+    return "/admin";
+  }
+
+  return nextPath;
+}
+
 export default async function AdminLoginPage({
   searchParams,
 }: AdminLoginPageProps) {
   const params = await searchParams;
-  const hasError = params.error === "1";
-  const nextPath = params.next ?? "/admin";
+
+  const errorMessage = getLoginErrorMessage(params.error);
+  const nextPath = getSafeNextPath(params.next);
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#fff7ed] px-6">
@@ -29,9 +58,9 @@ export default async function AdminLoginPage({
           </p>
         </div>
 
-        {hasError && (
+        {errorMessage && (
           <div className="mt-6 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
-            Usuário ou senha incorretos. Tente novamente.
+            {errorMessage}
           </div>
         )}
 
