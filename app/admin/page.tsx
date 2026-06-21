@@ -37,10 +37,11 @@ export default function AdminPage() {
 
         <p className="mt-5 max-w-2xl text-base leading-8 text-[#76524a]">
           Gerencie as principais áreas do site da Popidi Pizzaria: carrossel da
-          página inicial, categorias, produtos, fotos e valores do cardápio.
+          página inicial, categorias, produtos, fotos, valores do cardápio e
+          documentação interna.
         </p>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           <Link
             href="/admin/carrossel"
             className="group rounded-3xl bg-white p-8 shadow-sm ring-1 ring-[#6f1018]/10 transition hover:-translate-y-1 hover:shadow-lg"
@@ -99,11 +100,46 @@ export default function AdminPage() {
 
             <p className="mt-4 text-sm leading-7 text-[#76524a]">
               Gerenciar categorias, subcategorias, pizzas, esfirras, bebidas,
-              fotos, valores e itens ativos.
+              fotos, valores, promoções e itens ativos.
             </p>
 
             <p className="mt-6 text-sm font-bold text-[#b51f2b] transition group-hover:translate-x-1">
               Gerenciar cardápio →
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/documentacao"
+            className="group rounded-3xl bg-white p-8 shadow-sm ring-1 ring-[#6f1018]/10 transition hover:-translate-y-1 hover:shadow-lg"
+          >
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#fff7ed] text-[#b51f2b] ring-1 ring-[#6f1018]/10">
+              <svg
+                aria-hidden="true"
+                className="h-8 w-8"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" />
+                <path d="M14 2v6h6" />
+                <path d="M8 13h8" />
+                <path d="M8 17h8" />
+                <path d="M8 9h2" />
+              </svg>
+            </div>
+
+            <h2 className="mt-8 font-serif text-3xl font-bold text-[#3a0a0f]">
+              Documentação
+            </h2>
+
+            <p className="mt-4 text-sm leading-7 text-[#76524a]">
+              Baixar manuais em PDF sobre carrossel, categorias, produtos e
+              promoções do painel administrativo.
+            </p>
+
+            <p className="mt-6 text-sm font-bold text-[#b51f2b] transition group-hover:translate-x-1">
+              Ver documentação →
             </p>
           </Link>
         </div>
