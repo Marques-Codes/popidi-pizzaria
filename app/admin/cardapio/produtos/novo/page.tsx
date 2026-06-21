@@ -72,7 +72,8 @@ export default async function NewProductPage({
           </h1>
 
           <p className="mt-4 text-base leading-8 text-[#76524a]">
-            Cadastre pizzas, esfirras, bebidas, fotos e valores do cardápio.
+            Cadastre pizzas, esfirras, bebidas, fotos, valores e promoções do
+            cardápio.
           </p>
 
           {params.error === "category" && (
@@ -90,6 +91,13 @@ export default async function NewProductPage({
           {params.error === "price" && (
             <div className="mt-6 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
               Informe um preço válido. Exemplo: 39,90
+            </div>
+          )}
+
+          {params.error === "promotion-price" && (
+            <div className="mt-6 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+              Informe um preço promocional válido e menor que o preço normal.
+              Exemplo: preço normal 40,99 e promocional 34,99.
             </div>
           )}
 
@@ -127,7 +135,6 @@ export default async function NewProductPage({
             <form
               action={createMenuProduct}
               className="mt-8 space-y-6"
-              encType="multipart/form-data"
             >
               <div>
                 <label
@@ -196,7 +203,7 @@ export default async function NewProductPage({
                   htmlFor="price"
                   className="text-sm font-bold text-[#3a0a0f]"
                 >
-                  Preço
+                  Preço normal
                 </label>
 
                 <input
@@ -206,8 +213,55 @@ export default async function NewProductPage({
                   required
                   inputMode="decimal"
                   className="mt-2 w-full rounded-xl border border-[#6f1018]/20 bg-[#fff7ed] px-4 py-4 text-[#3a0a0f] outline-none transition focus:border-[#b51f2b]"
-                  placeholder="Ex: 39,90"
+                  placeholder="Ex: 40,99"
                 />
+              </div>
+
+              <div className="rounded-2xl bg-[#fff7ed] p-5 ring-1 ring-[#6f1018]/10">
+                <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#b51f2b]">
+                  Promoção
+                </p>
+
+                <p className="mt-2 text-sm leading-7 text-[#76524a]">
+                  Deixe vazio se o produto não estiver em promoção.
+                </p>
+
+                <div className="mt-5 space-y-5">
+                  <div>
+                    <label
+                      htmlFor="promotionalPrice"
+                      className="text-sm font-bold text-[#3a0a0f]"
+                    >
+                      Preço promocional
+                    </label>
+
+                    <input
+                      id="promotionalPrice"
+                      name="promotionalPrice"
+                      type="text"
+                      inputMode="decimal"
+                      className="mt-2 w-full rounded-xl border border-[#6f1018]/20 bg-white px-4 py-4 text-[#3a0a0f] outline-none transition focus:border-[#b51f2b]"
+                      placeholder="Ex: 34,99"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="promotionLabel"
+                      className="text-sm font-bold text-[#3a0a0f]"
+                    >
+                      Etiqueta da promoção
+                    </label>
+
+                    <input
+                      id="promotionLabel"
+                      name="promotionLabel"
+                      type="text"
+                      className="mt-2 w-full rounded-xl border border-[#6f1018]/20 bg-white px-4 py-4 text-[#3a0a0f] outline-none transition focus:border-[#b51f2b]"
+                      placeholder="Ex: Promoção, Oferta, Por tempo limitado"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div>

@@ -21,6 +21,14 @@ function formatPriceInput(priceCents: number) {
   return (priceCents / 100).toFixed(2).replace(".", ",");
 }
 
+function formatOptionalPriceInput(priceCents: number | null) {
+  if (priceCents === null) {
+    return "";
+  }
+
+  return formatPriceInput(priceCents);
+}
+
 function getCategoryLabel(
   categoryId: string,
   categories: Awaited<ReturnType<typeof getMenuCategories>>,
@@ -92,7 +100,8 @@ export default async function EditProductPage({
           </h1>
 
           <p className="mt-4 text-base leading-8 text-[#76524a]">
-            Altere categoria, nome, descrição, preço e foto do produto.
+            Altere categoria, nome, descrição, preço, promoção e foto do
+            produto.
           </p>
 
           {queryParams.error === "category" && (
@@ -113,6 +122,13 @@ export default async function EditProductPage({
             </div>
           )}
 
+          {queryParams.error === "promotion-price" && (
+            <div className="mt-6 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+              Informe um preço promocional válido e menor que o preço normal.
+              Exemplo: preço normal 40,99 e promocional 34,99.
+            </div>
+          )}
+
           {queryParams.error === "file-type" && (
             <div className="mt-6 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
               Envie apenas arquivos de imagem.
@@ -128,7 +144,6 @@ export default async function EditProductPage({
           <form
             action={updateMenuProduct}
             className="mt-8 space-y-6"
-            encType="multipart/form-data"
           >
             <input type="hidden" name="productId" value={product.id} />
 
@@ -196,7 +211,7 @@ export default async function EditProductPage({
                 htmlFor="price"
                 className="text-sm font-bold text-[#3a0a0f]"
               >
-                Preço
+                Preço normal
               </label>
 
               <input
@@ -208,6 +223,57 @@ export default async function EditProductPage({
                 defaultValue={formatPriceInput(product.priceCents)}
                 className="mt-2 w-full rounded-xl border border-[#6f1018]/20 bg-[#fff7ed] px-4 py-4 text-[#3a0a0f] outline-none transition focus:border-[#b51f2b]"
               />
+            </div>
+
+            <div className="rounded-2xl bg-[#fff7ed] p-5 ring-1 ring-[#6f1018]/10">
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#b51f2b]">
+                Promoção
+              </p>
+
+              <p className="mt-2 text-sm leading-7 text-[#76524a]">
+                Para remover a promoção, apague o preço promocional e salve.
+              </p>
+
+              <div className="mt-5 space-y-5">
+                <div>
+                  <label
+                    htmlFor="promotionalPrice"
+                    className="text-sm font-bold text-[#3a0a0f]"
+                  >
+                    Preço promocional
+                  </label>
+
+                  <input
+                    id="promotionalPrice"
+                    name="promotionalPrice"
+                    type="text"
+                    inputMode="decimal"
+                    defaultValue={formatOptionalPriceInput(
+                      product.promotionalPriceCents,
+                    )}
+                    className="mt-2 w-full rounded-xl border border-[#6f1018]/20 bg-white px-4 py-4 text-[#3a0a0f] outline-none transition focus:border-[#b51f2b]"
+                    placeholder="Ex: 34,99"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="promotionLabel"
+                    className="text-sm font-bold text-[#3a0a0f]"
+                  >
+                    Etiqueta da promoção
+                  </label>
+
+                  <input
+                    id="promotionLabel"
+                    name="promotionLabel"
+                    type="text"
+                    defaultValue={product.promotionLabel ?? ""}
+                    className="mt-2 w-full rounded-xl border border-[#6f1018]/20 bg-white px-4 py-4 text-[#3a0a0f] outline-none transition focus:border-[#b51f2b]"
+                    placeholder="Ex: Promoção, Oferta, Por tempo limitado"
+                  />
+                </div>
+              </div>
             </div>
 
             {product.imageUrl && (

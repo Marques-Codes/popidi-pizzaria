@@ -7,10 +7,14 @@ export type MenuProduct = {
   slug: string;
   description: string | null;
   priceCents: number;
+  promotionalPriceCents: number | null;
+  promotionLabel: string | null;
   imageUrl: string | null;
   imageAlt: string | null;
   isActive: boolean;
+  isFeatured: boolean;
   order: number;
+  featuredOrder: number;
 };
 
 type MenuProductRow = {
@@ -20,10 +24,14 @@ type MenuProductRow = {
   slug: string;
   description: string | null;
   price_cents: number;
+  promotional_price_cents: number | null;
+  promotion_label: string | null;
   image_url: string | null;
   image_alt: string | null;
   is_active: boolean;
+  is_featured: boolean;
   display_order: number;
+  featured_order: number;
 };
 
 type CreateMenuProductInput = {
@@ -31,6 +39,8 @@ type CreateMenuProductInput = {
   name: string;
   description: string | null;
   priceCents: number;
+  promotionalPriceCents: number | null;
+  promotionLabel: string | null;
   imageUrl: string | null;
   imageAlt: string | null;
 };
@@ -41,8 +51,15 @@ type UpdateMenuProductInput = {
   name: string;
   description: string | null;
   priceCents: number;
+  promotionalPriceCents: number | null;
+  promotionLabel: string | null;
   imageUrl: string | null;
   imageAlt: string | null;
+};
+
+type UpdateMenuProductOrderInput = {
+  id: string;
+  order: number;
 };
 
 function mapProductRowToProduct(row: MenuProductRow): MenuProduct {
@@ -53,10 +70,14 @@ function mapProductRowToProduct(row: MenuProductRow): MenuProduct {
     slug: row.slug,
     description: row.description,
     priceCents: row.price_cents,
+    promotionalPriceCents: row.promotional_price_cents,
+    promotionLabel: row.promotion_label,
     imageUrl: row.image_url,
     imageAlt: row.image_alt,
     isActive: row.is_active,
+    isFeatured: row.is_featured,
     order: row.display_order,
+    featuredOrder: row.featured_order,
   };
 }
 
@@ -88,13 +109,47 @@ function createUniqueSlug(baseSlug: string, existingSlugs: Set<string>) {
   return nextSlug;
 }
 
+function getNextFeaturedOrder(products: MenuProduct[]) {
+  const featuredProducts = products.filter((product) => product.isFeatured);
+
+  if (featuredProducts.length === 0) {
+    return 1;
+  }
+
+  return Math.max(...featuredProducts.map((product) => product.featuredOrder)) + 1;
+}
+
+export function sortMenuProducts(products: MenuProduct[]) {
+  return [...products].sort((firstProduct, secondProduct) => {
+    if (firstProduct.order !== secondProduct.order) {
+      return firstProduct.order - secondProduct.order;
+    }
+
+    return firstProduct.name.localeCompare(secondProduct.name, "pt-BR");
+  });
+}
+
+export function sortFeaturedMenuProducts(products: MenuProduct[]) {
+  return [...products].sort((firstProduct, secondProduct) => {
+    if (firstProduct.featuredOrder !== secondProduct.featuredOrder) {
+      return firstProduct.featuredOrder - secondProduct.featuredOrder;
+    }
+
+    if (firstProduct.order !== secondProduct.order) {
+      return firstProduct.order - secondProduct.order;
+    }
+
+    return firstProduct.name.localeCompare(secondProduct.name, "pt-BR");
+  });
+}
+
 export async function getMenuProducts() {
   const supabase = getSupabaseAdminClient();
 
   const { data, error } = await supabase
     .from("menu_products")
     .select(
-      "id,category_id,name,slug,description,price_cents,image_url,image_alt,is_active,display_order",
+      "id,category_id,name,slug,description,price_cents,promotional_price_cents,promotion_label,image_url,image_alt,is_active,is_featured,display_order,featured_order",
     )
     .order("display_order", { ascending: true })
     .order("name", { ascending: true });
@@ -108,13 +163,21 @@ export async function getMenuProducts() {
   return rows.map(mapProductRowToProduct);
 }
 
+export async function getFeaturedMenuProducts() {
+  const products = await getMenuProducts();
+
+  return sortFeaturedMenuProducts(
+    products.filter((product) => product.isActive && product.isFeatured),
+  );
+}
+
 export async function getMenuProductById(productId: string) {
   const supabase = getSupabaseAdminClient();
 
   const { data, error } = await supabase
     .from("menu_products")
     .select(
-      "id,category_id,name,slug,description,price_cents,image_url,image_alt,is_active,display_order",
+      "id,category_id,name,slug,description,price_cents,promotional_price_cents,promotion_label,image_url,image_alt,is_active,is_featured,display_order,featured_order",
     )
     .eq("id", productId)
     .single();
@@ -148,10 +211,14 @@ export async function createMenuProductRecord(input: CreateMenuProductInput) {
     slug,
     description: input.description,
     price_cents: input.priceCents,
+    promotional_price_cents: input.promotionalPriceCents,
+    promotion_label: input.promotionLabel,
     image_url: input.imageUrl,
     image_alt: input.imageAlt,
     is_active: true,
+    is_featured: false,
     display_order: nextOrder,
+    featured_order: 1,
   });
 
   if (error) {
@@ -169,6 +236,8 @@ export async function updateMenuProductRecord(input: UpdateMenuProductInput) {
       name: input.name,
       description: input.description,
       price_cents: input.priceCents,
+      promotional_price_cents: input.promotionalPriceCents,
+      promotion_label: input.promotionLabel,
       image_url: input.imageUrl,
       image_alt: input.imageAlt,
       updated_at: new Date().toISOString(),
@@ -177,6 +246,26 @@ export async function updateMenuProductRecord(input: UpdateMenuProductInput) {
 
   if (error) {
     throw new Error(`Erro ao atualizar produto: ${error.message}`);
+  }
+}
+
+export async function updateMenuProductsOrderRecord(
+  products: UpdateMenuProductOrderInput[],
+) {
+  const supabase = getSupabaseAdminClient();
+
+  for (const product of products) {
+    const { error } = await supabase
+      .from("menu_products")
+      .update({
+        display_order: product.order,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", product.id);
+
+    if (error) {
+      throw new Error(`Erro ao atualizar ordem do produto: ${error.message}`);
+    }
   }
 }
 
@@ -199,6 +288,35 @@ export async function toggleMenuProductStatusRecord(productId: string) {
 
   if (error) {
     throw new Error(`Erro ao alterar status do produto: ${error.message}`);
+  }
+}
+
+export async function toggleMenuProductFeaturedRecord(productId: string) {
+  const product = await getMenuProductById(productId);
+
+  if (!product) {
+    throw new Error("Produto não encontrado.");
+  }
+
+  const products = await getMenuProducts();
+  const supabase = getSupabaseAdminClient();
+
+  const nextIsFeatured = !product.isFeatured;
+  const nextFeaturedOrder = nextIsFeatured
+    ? getNextFeaturedOrder(products)
+    : product.featuredOrder;
+
+  const { error } = await supabase
+    .from("menu_products")
+    .update({
+      is_featured: nextIsFeatured,
+      featured_order: nextFeaturedOrder,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", productId);
+
+  if (error) {
+    throw new Error(`Erro ao alterar destaque do produto: ${error.message}`);
   }
 }
 

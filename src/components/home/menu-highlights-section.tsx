@@ -1,55 +1,16 @@
 import Link from "next/link";
+import { getFeaturedMenuProducts } from "@/lib/menu-product-storage";
 
-const menuItems = [
-  {
-    name: "Calabresa",
-    tag: "Tradicional",
-    description:
-      "Molho especial, muçarela, calabresa fatiada, cebola e orégano.",
-    price: "A partir de R$ 39,90",
-    image: "/images/menu/pizza-card-1.jpg",
-  },
-  {
-    name: "Frango com Catupiry",
-    tag: "Clássica",
-    description: "Frango desfiado, muçarela, Catupiry cremoso e orégano.",
-    price: "A partir de R$ 44,90",
-    image: "/images/menu/pizza-card-2.webp",
-  },
-  {
-    name: "Quatro Queijos",
-    tag: "Especial",
-    description:
-      "Muçarela, provolone, parmesão, Catupiry e um toque especial da casa.",
-    price: "A partir de R$ 46,90",
-    image: "/images/menu/pizza-card-3.jpg",
-  },
-  {
-    name: "Portuguesa",
-    tag: "Tradicional",
-    description: "Presunto, ovos, cebola, muçarela, azeitonas, milho e orégano.",
-    price: "A partir de R$ 42,90",
-    image: "/images/menu/pizza-card-4.jpg",
-  },
-  {
-    name: "Moda da Casa",
-    tag: "Da Popidi",
-    description:
-      "Uma combinação especial pensada para quem quer experimentar algo marcante.",
-    price: "A partir de R$ 49,90",
-    image: "/images/menu/pizza-card-5.jpg",
-  },
-  {
-    name: "Chocolate com Morango",
-    tag: "Doce",
-    description:
-      "Chocolate cremoso, morangos selecionados e finalização especial.",
-    price: "A partir de R$ 45,90",
-    image: "/images/menu/pizza-card-6.jpg",
-  },
-];
+function formatPrice(priceCents: number) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(priceCents / 100);
+}
 
-export function MenuHighlightsSection() {
+export async function MenuHighlightsSection() {
+  const featuredProducts = await getFeaturedMenuProducts();
+
   return (
     <section id="cardapio" className="bg-[#fff7ed] px-6 py-28">
       <div className="mx-auto max-w-7xl">
@@ -68,41 +29,90 @@ export function MenuHighlightsSection() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {menuItems.map((item) => (
-            <article
-              key={item.name}
-              className="overflow-hidden rounded-2xl bg-[#f6efe8] shadow-sm ring-1 ring-[#6f1018]/10 transition hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div
-                className="relative h-64 bg-cover bg-center"
-                style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.08), rgba(0,0,0,0.35)), url(${item.image})`,
-                }}
-              >
-                <span className="absolute left-5 top-5 rounded-full bg-[#b51f2b] px-4 py-2 text-xs font-bold text-white">
-                  {item.tag}
-                </span>
-              </div>
+        {featuredProducts.length === 0 ? (
+          <div className="mx-auto mt-12 max-w-3xl rounded-3xl bg-[#f6efe8] p-8 text-center shadow-sm ring-1 ring-[#6f1018]/10">
+            <h3 className="font-serif text-3xl font-bold text-[#3a0a0f]">
+              Nenhum destaque selecionado ainda
+            </h3>
 
-              <div className="p-7">
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="font-serif text-2xl font-semibold text-[#3a0a0f]">
-                    {item.name}
-                  </h3>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#76524a]">
+              Em breve vamos destacar algumas opções especiais da Popidi aqui.
+              Para ver todos os produtos, acesse o cardápio completo.
+            </p>
+          </div>
+        ) : (
+          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {featuredProducts.map((product) => {
+              const promotionalPriceText =
+                product.promotionalPriceCents === null
+                  ? null
+                  : formatPrice(product.promotionalPriceCents);
 
-                  <p className="max-w-32 text-right text-sm font-bold leading-6 text-[#d79a22]">
-                    {item.price}
-                  </p>
-                </div>
+              const hasPromotion = promotionalPriceText !== null;
 
-                <p className="mt-4 text-sm leading-7 text-[#76524a]">
-                  {item.description}
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
+              return (
+                <article
+                  key={product.id}
+                  className="overflow-hidden rounded-2xl bg-[#f6efe8] shadow-sm ring-1 ring-[#6f1018]/10 transition hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <div className="relative h-64 bg-[#eadfd6]">
+                    {product.imageUrl ? (
+                      <img
+                        src={product.imageUrl}
+                        alt={product.imageAlt ?? product.name}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center px-6 text-center text-sm font-semibold text-[#76524a]">
+                        Produto sem imagem
+                      </div>
+                    )}
+
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/35" />
+
+                    <span className="absolute left-5 top-5 rounded-full bg-[#b51f2b] px-4 py-2 text-xs font-bold text-white">
+                      {hasPromotion
+                        ? product.promotionLabel ?? "Promoção"
+                        : "Destaque"}
+                    </span>
+                  </div>
+
+                  <div className="p-7">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="font-serif text-2xl font-semibold text-[#3a0a0f]">
+                        {product.name}
+                      </h3>
+
+                      <div className="max-w-36 text-right">
+                        {hasPromotion ? (
+                          <>
+                            <p className="text-xs font-bold text-[#76524a] line-through">
+                              {formatPrice(product.priceCents)}
+                            </p>
+
+                            <p className="mt-1 text-sm font-bold leading-6 text-[#d79a22]">
+                              {promotionalPriceText}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="text-sm font-bold leading-6 text-[#d79a22]">
+                            {formatPrice(product.priceCents)}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {product.description && (
+                      <p className="mt-4 text-sm leading-7 text-[#76524a]">
+                        {product.description}
+                      </p>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
 
         <div className="mt-14 text-center">
           <Link

@@ -4,7 +4,10 @@ import {
   getMenuCategories,
   getParentCategories,
 } from "@/lib/menu-storage";
-import { getMenuProducts } from "@/lib/menu-product-storage";
+import {
+  getMenuProducts,
+  sortMenuProducts,
+} from "@/lib/menu-product-storage";
 
 export const dynamic = "force-dynamic";
 
@@ -41,11 +44,11 @@ function getSectionDescription(parentName: string, childName?: string) {
   const normalizedChild = childName?.toLowerCase();
 
   if (normalizedParent === "pizza" && normalizedChild === "salgada") {
-    return "Sabores tradicionais e especiais para quem ama uma boa pizza bem recheada.";
+    return "Pizzas salgadas tradicionais e especiais.";
   }
 
   if (normalizedParent === "pizza" && normalizedChild === "doce") {
-    return "Opções doces para fechar o pedido com aquele sabor especial.";
+    return "Pizzas doces da Popidi.";
   }
 
   if (normalizedParent === "esfirra" && normalizedChild === "salgada") {
@@ -85,8 +88,10 @@ export default async function CardapioPage() {
     );
 
     if (childCategories.length === 0) {
-      const categoryProducts = activeProducts.filter(
-        (product) => product.categoryId === parentCategory.id,
+      const categoryProducts = sortMenuProducts(
+        activeProducts.filter(
+          (product) => product.categoryId === parentCategory.id,
+        ),
       );
 
       if (categoryProducts.length === 0) {
@@ -107,8 +112,10 @@ export default async function CardapioPage() {
 
     return childCategories
       .map((childCategory) => {
-        const categoryProducts = activeProducts.filter(
-          (product) => product.categoryId === childCategory.id,
+        const categoryProducts = sortMenuProducts(
+          activeProducts.filter(
+            (product) => product.categoryId === childCategory.id,
+          ),
         );
 
         return {
@@ -173,48 +180,85 @@ export default async function CardapioPage() {
                 </div>
 
                 <div className="mt-8 space-y-5">
-                  {section.products.map((product) => (
-                    <article
-                      key={product.id}
-                      className="grid gap-6 rounded-2xl bg-[#f6efe8] p-5 shadow-sm ring-1 ring-[#6f1018]/10 md:grid-cols-[160px_1fr_150px] md:items-center"
-                    >
-                      <div className="h-32 overflow-hidden rounded-xl bg-[#eadfd6]">
-                        {product.imageUrl ? (
-                          <img
-                            src={product.imageUrl}
-                            alt={product.imageAlt ?? product.name}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-full items-center justify-center px-4 text-center text-xs font-semibold text-[#76524a]">
-                            Produto sem imagem
-                          </div>
-                        )}
-                      </div>
+                  {section.products.map((product) => {
+                    const promotionalPriceText =
+                      product.promotionalPriceCents === null
+                        ? null
+                        : formatPrice(product.promotionalPriceCents);
 
-                      <div>
-                        <h3 className="font-serif text-2xl font-bold text-[#3a0a0f]">
-                          {product.name}
-                        </h3>
+                    const hasPromotion = promotionalPriceText !== null;
 
-                        {product.description && (
-                          <p className="mt-3 text-sm leading-7 text-[#76524a]">
-                            {product.description}
-                          </p>
-                        )}
-                      </div>
+                    return (
+                      <article
+                        key={product.id}
+                        className="grid gap-6 rounded-2xl bg-[#f6efe8] p-5 shadow-sm ring-1 ring-[#6f1018]/10 md:grid-cols-[160px_1fr_170px] md:items-center"
+                      >
+                        <div className="relative h-32 overflow-hidden rounded-xl bg-[#eadfd6]">
+                          {product.imageUrl ? (
+                            <img
+                              src={product.imageUrl}
+                              alt={product.imageAlt ?? product.name}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full items-center justify-center px-4 text-center text-xs font-semibold text-[#76524a]">
+                              Produto sem imagem
+                            </div>
+                          )}
 
-                      <div className="rounded-xl bg-[#fff7ed] px-5 py-4 text-center ring-1 ring-[#6f1018]/10">
-                        <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#b51f2b]">
-                          Valor
-                        </p>
+                          {hasPromotion && (
+                            <span className="absolute left-2 top-2 rounded-full bg-yellow-400 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#3a0a0f] shadow-sm">
+                              {product.promotionLabel ?? "Promoção"}
+                            </span>
+                          )}
+                        </div>
 
-                        <p className="mt-2 text-xl font-bold text-[#d79a22]">
-                          {formatPrice(product.priceCents)}
-                        </p>
-                      </div>
-                    </article>
-                  ))}
+                        <div>
+                          <h3 className="font-serif text-2xl font-bold text-[#3a0a0f]">
+                            {product.name}
+                          </h3>
+
+                          {product.description && (
+                            <p className="mt-3 text-sm leading-7 text-[#76524a]">
+                              {product.description}
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="rounded-xl bg-[#fff7ed] px-5 py-4 text-center ring-1 ring-[#6f1018]/10">
+                          {hasPromotion ? (
+                            <>
+                              <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#b51f2b]">
+                                De
+                              </p>
+
+                              <p className="mt-1 text-sm font-bold text-[#76524a] line-through">
+                                {formatPrice(product.priceCents)}
+                              </p>
+
+                              <p className="mt-3 text-xs font-bold uppercase tracking-[0.22em] text-[#b51f2b]">
+                                Por
+                              </p>
+
+                              <p className="mt-1 text-2xl font-bold text-[#d79a22]">
+                                {promotionalPriceText}
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#b51f2b]">
+                                Valor
+                              </p>
+
+                              <p className="mt-2 text-xl font-bold text-[#d79a22]">
+                                {formatPrice(product.priceCents)}
+                              </p>
+                            </>
+                          )}
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
               </section>
             ))}

@@ -9,8 +9,12 @@ import {
   createMenuProductRecord,
   deleteMenuProductRecord,
   getMenuProductById,
+  getMenuProducts,
+  sortMenuProducts,
+  toggleMenuProductFeaturedRecord,
   toggleMenuProductStatusRecord,
   updateMenuProductRecord,
+  updateMenuProductsOrderRecord,
 } from "@/lib/menu-product-storage";
 
 const maxImageSizeInBytes = 5 * 1024 * 1024;
@@ -49,6 +53,16 @@ function parsePriceToCents(value: string) {
   return Math.round(price * 100);
 }
 
+function parseOptionalPriceToCents(value: string) {
+  const cleanedValue = value.replace(/[^\d,.-]/g, "").trim();
+
+  if (!cleanedValue) {
+    return null;
+  }
+
+  return parsePriceToCents(cleanedValue);
+}
+
 function isRemoteBlobImage(imageUrl: string | null): imageUrl is string {
   if (!imageUrl) {
     return false;
@@ -68,6 +82,7 @@ async function uploadProductImage(image: File) {
 }
 
 function revalidateMenuProductPages() {
+  revalidatePath("/");
   revalidatePath("/admin/cardapio");
   revalidatePath("/admin/cardapio/produtos");
   revalidatePath("/cardapio");
@@ -81,11 +96,42 @@ async function validateCategory(categoryId: string) {
   );
 }
 
+function resolvePromotionData({
+  priceCents,
+  promotionalPrice,
+  promotionLabel,
+  errorRedirectUrl,
+}: {
+  priceCents: number;
+  promotionalPrice: string;
+  promotionLabel: string;
+  errorRedirectUrl: string;
+}) {
+  const hasPromotionalPrice = promotionalPrice.length > 0;
+  const promotionalPriceCents = parseOptionalPriceToCents(promotionalPrice);
+
+  if (hasPromotionalPrice && promotionalPriceCents === null) {
+    redirect(`${errorRedirectUrl}?error=promotion-price`);
+  }
+
+  if (promotionalPriceCents !== null && promotionalPriceCents >= priceCents) {
+    redirect(`${errorRedirectUrl}?error=promotion-price`);
+  }
+
+  return {
+    promotionalPriceCents,
+    promotionLabel:
+      promotionalPriceCents !== null ? promotionLabel || "Promoção" : null,
+  };
+}
+
 export async function createMenuProduct(formData: FormData) {
   const categoryId = normalizeText(formData.get("categoryId"));
   const name = normalizeText(formData.get("name"));
   const description = normalizeText(formData.get("description"));
   const price = normalizeText(formData.get("price"));
+  const promotionalPrice = normalizeText(formData.get("promotionalPrice"));
+  const promotionLabel = normalizeText(formData.get("promotionLabel"));
   const imageAlt = normalizeText(formData.get("imageAlt"));
   const image = formData.get("image");
 
@@ -102,6 +148,13 @@ export async function createMenuProduct(formData: FormData) {
   if (priceCents === null) {
     redirect("/admin/cardapio/produtos/novo?error=price");
   }
+
+  const promotionData = resolvePromotionData({
+    priceCents,
+    promotionalPrice,
+    promotionLabel,
+    errorRedirectUrl: "/admin/cardapio/produtos/novo",
+  });
 
   const categoryExists = await validateCategory(categoryId);
 
@@ -129,6 +182,8 @@ export async function createMenuProduct(formData: FormData) {
     name,
     description: description || null,
     priceCents,
+    promotionalPriceCents: promotionData.promotionalPriceCents,
+    promotionLabel: promotionData.promotionLabel,
     imageUrl,
     imageAlt: imageAlt || name,
   });
@@ -144,6 +199,8 @@ export async function updateMenuProduct(formData: FormData) {
   const name = normalizeText(formData.get("name"));
   const description = normalizeText(formData.get("description"));
   const price = normalizeText(formData.get("price"));
+  const promotionalPrice = normalizeText(formData.get("promotionalPrice"));
+  const promotionLabel = normalizeText(formData.get("promotionLabel"));
   const imageAlt = normalizeText(formData.get("imageAlt"));
   const image = formData.get("image");
 
@@ -151,24 +208,33 @@ export async function updateMenuProduct(formData: FormData) {
     redirect("/admin/cardapio/produtos");
   }
 
+  const editUrl = `/admin/cardapio/produtos/${productId}/editar`;
+
   if (!categoryId) {
-    redirect(`/admin/cardapio/produtos/${productId}/editar?error=category`);
+    redirect(`${editUrl}?error=category`);
   }
 
   if (!name) {
-    redirect(`/admin/cardapio/produtos/${productId}/editar?error=name`);
+    redirect(`${editUrl}?error=name`);
   }
 
   const priceCents = parsePriceToCents(price);
 
   if (priceCents === null) {
-    redirect(`/admin/cardapio/produtos/${productId}/editar?error=price`);
+    redirect(`${editUrl}?error=price`);
   }
+
+  const promotionData = resolvePromotionData({
+    priceCents,
+    promotionalPrice,
+    promotionLabel,
+    errorRedirectUrl: editUrl,
+  });
 
   const categoryExists = await validateCategory(categoryId);
 
   if (!categoryExists) {
-    redirect(`/admin/cardapio/produtos/${productId}/editar?error=category`);
+    redirect(`${editUrl}?error=category`);
   }
 
   const product = await getMenuProductById(productId);
@@ -181,11 +247,11 @@ export async function updateMenuProduct(formData: FormData) {
 
   if (image instanceof File && image.size > 0) {
     if (!image.type.startsWith("image/")) {
-      redirect(`/admin/cardapio/produtos/${productId}/editar?error=file-type`);
+      redirect(`${editUrl}?error=file-type`);
     }
 
     if (image.size > maxImageSizeInBytes) {
-      redirect(`/admin/cardapio/produtos/${productId}/editar?error=file-size`);
+      redirect(`${editUrl}?error=file-size`);
     }
 
     const blob = await uploadProductImage(image);
@@ -208,9 +274,68 @@ export async function updateMenuProduct(formData: FormData) {
     name,
     description: description || null,
     priceCents,
+    promotionalPriceCents: promotionData.promotionalPriceCents,
+    promotionLabel: promotionData.promotionLabel,
     imageUrl: nextImageUrl,
     imageAlt: imageAlt || name,
   });
+
+  revalidateMenuProductPages();
+
+  redirect("/admin/cardapio/produtos");
+}
+
+export async function moveMenuProduct(formData: FormData) {
+  const productId = normalizeText(formData.get("productId"));
+  const direction = normalizeText(formData.get("direction"));
+
+  if (!productId) {
+    redirect("/admin/cardapio/produtos");
+  }
+
+  const product = await getMenuProductById(productId);
+
+  if (!product) {
+    redirect("/admin/cardapio/produtos");
+  }
+
+  const products = await getMenuProducts();
+
+  const sameCategoryProducts = sortMenuProducts(
+    products.filter((item) => item.categoryId === product.categoryId),
+  ).map((item, index) => ({
+    ...item,
+    order: index + 1,
+  }));
+
+  const currentIndex = sameCategoryProducts.findIndex(
+    (item) => item.id === productId,
+  );
+
+  if (currentIndex === -1) {
+    redirect("/admin/cardapio/produtos");
+  }
+
+  const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+
+  if (targetIndex < 0 || targetIndex >= sameCategoryProducts.length) {
+    redirect("/admin/cardapio/produtos");
+  }
+
+  const reorderedProducts = [...sameCategoryProducts];
+
+  const currentProduct = reorderedProducts[currentIndex];
+  const targetProduct = reorderedProducts[targetIndex];
+
+  reorderedProducts[currentIndex] = targetProduct;
+  reorderedProducts[targetIndex] = currentProduct;
+
+  const productsWithUpdatedOrder = reorderedProducts.map((item, index) => ({
+    id: item.id,
+    order: index + 1,
+  }));
+
+  await updateMenuProductsOrderRecord(productsWithUpdatedOrder);
 
   revalidateMenuProductPages();
 
@@ -225,6 +350,20 @@ export async function toggleMenuProductStatus(formData: FormData) {
   }
 
   await toggleMenuProductStatusRecord(productId);
+
+  revalidateMenuProductPages();
+
+  redirect("/admin/cardapio/produtos");
+}
+
+export async function toggleMenuProductFeatured(formData: FormData) {
+  const productId = normalizeText(formData.get("productId"));
+
+  if (!productId) {
+    redirect("/admin/cardapio/produtos");
+  }
+
+  await toggleMenuProductFeaturedRecord(productId);
 
   revalidateMenuProductPages();
 
