@@ -1,38 +1,18 @@
 import {
-  Bike,
   MapPin,
   Phone,
-  Pizza,
   Route,
   Store,
-  Utensils,
 } from "lucide-react";
 
 const address = "R. Uirapuru, 1423 - Centro, Arapongas - PR, 86700-130";
 const phone = "(43) 3055-3535";
+
 const mapsUrl =
   "https://www.google.com/maps/search/?api=1&query=R.%20Uirapuru%2C%201423%20-%20Centro%2C%20Arapongas%20-%20PR%2C%2086700-130";
 
 const mapEmbedUrl =
   "https://www.google.com/maps?q=R.%20Uirapuru%2C%201423%20-%20Centro%2C%20Arapongas%20-%20PR%2C%2086700-130&output=embed";
-
-const highlights = [
-  {
-    icon: Pizza,
-    title: "Cardápio variado",
-    description: "Pizzas salgadas, doces e opções para todos os gostos.",
-  },
-  {
-    icon: Utensils,
-    title: "Rodízio e esfihas",
-    description: "Uma experiência completa para aproveitar com família e amigos.",
-  },
-  {
-    icon: Bike,
-    title: "Delivery",
-    description: "Peça sua pizza e aproveite o sabor da Popidi em casa.",
-  },
-];
 
 export function LocationSection() {
   return (
@@ -129,29 +109,6 @@ export function LocationSection() {
               allowFullScreen
             />
           </div>
-        </div>
-
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {highlights.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <article
-                key={item.title}
-                className="rounded-2xl bg-[#fff7ed]/80 p-7 ring-1 ring-[#6f1018]/10"
-              >
-                <Icon className="h-8 w-8 text-[#b51f2b]" />
-
-                <h3 className="mt-5 font-serif text-2xl font-semibold text-[#3a0a0f]">
-                  {item.title}
-                </h3>
-
-                <p className="mt-3 text-sm leading-7 text-[#76524a]">
-                  {item.description}
-                </p>
-              </article>
-            );
-          })}
         </div>
       </div>
     </section>

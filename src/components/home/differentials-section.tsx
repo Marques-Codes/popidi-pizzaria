@@ -1,10 +1,13 @@
 import {
   BadgeCheck,
+  Bike,
   Clock3,
   Flame,
   Gift,
   MapPin,
+  Pizza,
   Sandwich,
+  Utensils,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -50,6 +53,24 @@ const differentials: Differential[] = [
     title: "Experiência completa",
     description:
       "Além da pizza, queremos entregar uma experiência gostosa, simples e memorável.",
+  },
+  {
+    icon: Pizza,
+    title: "Cardápio variado",
+    description:
+      "Pizzas salgadas, doces e opções para todos os gostos.",
+  },
+  {
+    icon: Utensils,
+    title: "Rodízio e esfihas",
+    description:
+      "Uma experiência completa para aproveitar com família e amigos.",
+  },
+  {
+    icon: Bike,
+    title: "Delivery",
+    description:
+      "Peça sua pizza e aproveite o sabor da Popidi em casa.",
   },
 ];
 
