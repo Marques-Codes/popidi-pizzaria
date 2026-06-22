@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SectionScrollLink } from "@/components/section-scroll-link";
 
 const orderUrl = "https://pratodigital.com.br/pizzariapopidi/#/&s=4akMkWVkuI";
 
@@ -17,21 +18,33 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-white/80 md:flex">
-          <Link href="/#inicio" className="transition hover:text-white">
+          <SectionScrollLink
+            href="/#inicio"
+            className="transition hover:text-white"
+          >
             Início
-          </Link>
+          </SectionScrollLink>
 
-          <Link href="/#cardapio" className="transition hover:text-white">
+          <SectionScrollLink
+            href="/#cardapio"
+            className="transition hover:text-white"
+          >
             Cardápio
-          </Link>
+          </SectionScrollLink>
 
-          <Link href="/#sobre" className="transition hover:text-white">
+          <SectionScrollLink
+            href="/#sobre"
+            className="transition hover:text-white"
+          >
             Sobre Nós
-          </Link>
+          </SectionScrollLink>
 
-          <Link href="/#contato" className="transition hover:text-white">
+          <SectionScrollLink
+            href="/#contato"
+            className="transition hover:text-white"
+          >
             Contato
-          </Link>
+          </SectionScrollLink>
         </nav>
 
         <a
