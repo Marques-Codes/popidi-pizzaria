@@ -34,7 +34,7 @@ export function HeroCarousel({ slides: initialSlides }: HeroCarouselProps) {
   return (
     <section
       id="inicio"
-      className="relative flex min-h-[calc(100vh-80px)] items-center justify-center overflow-hidden px-6 text-center"
+      className="relative flex h-[560px] items-center justify-center overflow-hidden px-6 text-center md:h-[640px]"
     >
       {slides.map((slide, index) => (
         <div
@@ -50,31 +50,31 @@ export function HeroCarousel({ slides: initialSlides }: HeroCarouselProps) {
 
       <div className="absolute inset-0 bg-black/55" />
 
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[#fff7ed]" />
+      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#fff7ed]" />
 
       <div className="relative z-10 flex max-w-5xl flex-col items-center">
         <p className="rounded-full bg-[#6f1018]/80 px-5 py-2 text-sm font-bold text-white">
           Popidi Pizzaria em Arapongas - PR
         </p>
 
-        <h1 className="mt-8 max-w-4xl font-serif text-5xl font-bold tracking-tight text-white md:text-7xl">
+        <h1 className="mt-6 max-w-4xl font-serif text-4xl font-bold tracking-tight text-white md:text-6xl">
           O sabor da pizza perfeita está aqui
         </h1>
 
-        <p className="mt-6 max-w-2xl text-xl leading-8 text-white/90">
+        <p className="mt-5 max-w-2xl text-base leading-8 text-white/90 md:text-xl">
           Pizzas salgadas, doces, combos e bebidas preparados para transformar
           qualquer momento em uma boa lembrança.
         </p>
 
         <a
           href="#cardapio"
-          className="mt-10 rounded-md bg-[#e5393f] px-8 py-4 text-base font-bold text-white transition hover:bg-yellow-400 hover:text-[#220305]"
+          className="mt-8 rounded-md bg-[#e5393f] px-8 py-4 text-base font-bold text-white transition hover:bg-yellow-400 hover:text-[#220305]"
         >
           Ver Cardápio
         </a>
       </div>
 
-      <div className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+      <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 gap-2">
         {slides.map((slide, index) => (
           <button
             key={slide.id}

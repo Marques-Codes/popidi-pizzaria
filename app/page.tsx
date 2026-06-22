@@ -17,9 +17,9 @@ export default async function Home() {
 
       <main className="bg-[#fff7ed] pt-20">
         <HeroCarousel slides={heroSlides} />
+        <MenuHighlightsSection />
         <StorySection />
         <DifferentialsSection />
-        <MenuHighlightsSection />
         <LocationSection />
       </main>
     </>
