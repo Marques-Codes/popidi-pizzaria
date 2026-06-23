@@ -8,6 +8,25 @@ type HeroCarouselProps = {
   slides: HeroCarouselSlide[];
 };
 
+const instagramUrl = "https://www.instagram.com/popidipizzaria/";
+
+function InstagramIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-6 w-6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 export function HeroCarousel({ slides: initialSlides }: HeroCarouselProps) {
   const slides = useMemo(() => {
     return getActiveHeroCarouselSlides(initialSlides);
@@ -51,6 +70,16 @@ export function HeroCarousel({ slides: initialSlides }: HeroCarouselProps) {
       <div className="absolute inset-0 bg-black/55" />
 
       <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#fff7ed]" />
+
+      <a
+        href={instagramUrl}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Abrir Instagram da Popidi Pizzaria"
+        className="absolute right-6 top-6 z-20 inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-[#b51f2b] shadow-lg ring-1 ring-white/40 backdrop-blur transition hover:-translate-y-0.5 hover:bg-yellow-400 hover:text-[#220305] md:right-10 md:top-8"
+      >
+        <InstagramIcon />
+      </a>
 
       <div className="relative z-10 flex max-w-5xl flex-col items-center">
         <p className="rounded-full bg-[#6f1018]/80 px-5 py-2 text-sm font-bold text-white">

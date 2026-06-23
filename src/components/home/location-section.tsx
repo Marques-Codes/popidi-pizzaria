@@ -8,11 +8,44 @@ import {
 const address = "R. Uirapuru, 1423 - Centro, Arapongas - PR, 86700-130";
 const phone = "(43) 3055-3535";
 
+const instagramUrl = "https://www.instagram.com/popidipizzaria/";
+const facebookUrl = "https://www.facebook.com/PopidiPizzaria?locale=pt_BR";
+
 const mapsUrl =
   "https://www.google.com/maps/search/?api=1&query=R.%20Uirapuru%2C%201423%20-%20Centro%2C%20Arapongas%20-%20PR%2C%2086700-130";
 
 const mapEmbedUrl =
   "https://www.google.com/maps?q=R.%20Uirapuru%2C%201423%20-%20Centro%2C%20Arapongas%20-%20PR%2C%2086700-130&output=embed";
+
+function InstagramIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-6 w-6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function FacebookIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-6 w-6"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path d="M14.2 8.6V6.9c0-.8.5-1 1-1h1.5V3.2c-.7-.1-1.6-.2-2.5-.2-2.5 0-4.2 1.5-4.2 4.3v1.3H7.3v3.1H10V21h3.3v-9.3h2.7l.5-3.1h-3.2Z" />
+    </svg>
+  );
+}
 
 export function LocationSection() {
   return (
@@ -74,6 +107,48 @@ export function LocationSection() {
                   <p className="mt-1 text-base leading-7 text-[#4f3034]">
                     {phone}
                   </p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center text-[#b51f2b]">
+                  <InstagramIcon />
+                </div>
+
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#b51f2b]">
+                    Instagram
+                  </p>
+
+                  <a
+                    href={instagramUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-1 inline-flex text-base font-semibold leading-7 text-[#4f3034] transition hover:text-[#b51f2b]"
+                  >
+                    @popidipizzaria
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center text-[#b51f2b]">
+                  <FacebookIcon />
+                </div>
+
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#b51f2b]">
+                    Facebook
+                  </p>
+
+                  <a
+                    href={facebookUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-1 inline-flex text-base font-semibold leading-7 text-[#4f3034] transition hover:text-[#b51f2b]"
+                  >
+                    Popidi Pizzaria
+                  </a>
                 </div>
               </div>
             </div>
