@@ -51,13 +51,15 @@ export function StorySection() {
           </p>
 
           <h2 className="mt-5 font-serif text-5xl font-bold tracking-tight text-[#3a0a0f] md:text-6xl">
-            Uma história feita de sabor, carinho e pizza
+            A Realização de um sonho.
           </h2>
 
           <p className="mt-6 text-lg leading-8 text-[#76524a]">
-            A Popidi Pizzaria nasceu em Arapongas, Paraná, com o objetivo de
-            levar para cada cliente uma pizza saborosa, bem preparada e perfeita
-            para dividir com a família e os amigos.
+            A PÓPIDI Delivery nasceu do empreendedorismo e da vontade de
+            oferecer um serviço de qualidade e com a máxima eficiência.
+            Apoiados na premissa de que cada detalhe é extremamente importante,
+            todos os nossos produtos são preparados com ingredientes de primeira
+            linha em um ambiente de altíssima higiene e rigoroso controle.
           </p>
         </div>
 
