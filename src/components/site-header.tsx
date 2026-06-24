@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { SectionScrollLink } from "@/components/section-scroll-link";
 
 const orderUrl = "https://pratodigital.com.br/pizzariapopidi/#/&s=4akMkWVkuI";
 
@@ -7,33 +7,45 @@ export function SiteHeader() {
   return (
     <header className="fixed left-0 top-0 z-50 w-full bg-[#6f1018]">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center">
+        <SectionScrollLink href="/#inicio" className="flex items-center">
           <Image
             src="/images/head/01.png"
-            alt="Popidi Pizzaria"
+            alt="Popidi Delivery"
             width={120}
             height={50}
             priority
             className="h-auto w-auto object-contain"
           />
-        </Link>
+        </SectionScrollLink>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-white/80 md:flex">
-          <Link href="/#inicio" className="transition hover:text-white">
+          <SectionScrollLink
+            href="/#inicio"
+            className="transition hover:text-white"
+          >
             Início
-          </Link>
+          </SectionScrollLink>
 
-          <Link href="/#cardapio" className="transition hover:text-white">
+          <SectionScrollLink
+            href="/#cardapio"
+            className="transition hover:text-white"
+          >
             Cardápio
-          </Link>
+          </SectionScrollLink>
 
-          <Link href="/#sobre" className="transition hover:text-white">
+          <SectionScrollLink
+            href="/#sobre"
+            className="transition hover:text-white"
+          >
             Sobre Nós
-          </Link>
+          </SectionScrollLink>
 
-          <Link href="/#contato" className="transition hover:text-white">
+          <SectionScrollLink
+            href="/#contato"
+            className="transition hover:text-white"
+          >
             Contato
-          </Link>
+          </SectionScrollLink>
         </nav>
 
         <a
