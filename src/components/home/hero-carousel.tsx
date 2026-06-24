@@ -83,7 +83,7 @@ export function HeroCarousel({ slides: initialSlides }: HeroCarouselProps) {
 
       <div className="relative z-10 flex max-w-5xl flex-col items-center">
         <h1 className="max-w-4xl font-serif text-4xl font-bold tracking-tight text-white md:text-6xl">
-          O sabor da pizza perfeita está aqui
+          O sabor da pizza e da esfirra está aqui
         </h1>
 
         <p className="mt-5 max-w-2xl text-base leading-8 text-white/90 md:text-xl">
