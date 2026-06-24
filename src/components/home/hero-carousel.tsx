@@ -82,11 +82,7 @@ export function HeroCarousel({ slides: initialSlides }: HeroCarouselProps) {
       </a>
 
       <div className="relative z-10 flex max-w-5xl flex-col items-center">
-        <p className="rounded-full bg-[#6f1018]/80 px-5 py-2 text-sm font-bold text-white">
-          Popidi Pizzaria em Arapongas - PR
-        </p>
-
-        <h1 className="mt-6 max-w-4xl font-serif text-4xl font-bold tracking-tight text-white md:text-6xl">
+        <h1 className="max-w-4xl font-serif text-4xl font-bold tracking-tight text-white md:text-6xl">
           O sabor da pizza perfeita está aqui
         </h1>
 
