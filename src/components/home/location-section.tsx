@@ -61,7 +61,7 @@ export function LocationSection() {
           </h2>
 
           <p className="mt-6 text-lg leading-8 text-[#76524a]">
-            Estamos em Arapongas, Paraná, com um espaço informal, alegre e
+            Espaço informal, alegre e
             perfeito para aproveitar uma boa pizza.
           </p>
         </div>
