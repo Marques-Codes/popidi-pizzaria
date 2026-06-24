@@ -70,6 +70,41 @@ function getSectionDescription(parentName: string, childName?: string) {
   return "Confira as opções disponíveis no cardápio da Popidi.";
 }
 
+
+function PizzaFlavorsBanner() {
+  return (
+    <section className="mt-12 overflow-hidden rounded-3xl bg-[#6f1018] px-6 py-10 text-white shadow-sm ring-1 ring-[#6f1018]/10 md:px-10 md:py-12">
+      <div className="grid items-center gap-8 md:grid-cols-[0.8fr_1.2fr]">
+        <div className="text-center md:text-left">
+          <p className="text-sm font-bold uppercase tracking-[0.32em] text-yellow-300">
+            Variedade de sabores
+          </p>
+
+          <h2 className="mt-4 font-serif text-6xl font-bold leading-none text-white md:text-7xl">
+            +73
+          </h2>
+
+          <p className="mt-2 text-xl font-bold uppercase tracking-[0.18em] text-white">
+            sabores de pizza
+          </p>
+        </div>
+
+        <div className="text-center md:text-left">
+          <h3 className="font-serif text-3xl font-bold leading-tight text-white md:text-4xl">
+            Um cardápio preparado para todos os gostos
+          </h3>
+
+          <p className="mt-4 max-w-3xl text-base leading-8 text-white/85">
+            A Popidi conta com uma grande variedade de sabores de pizza, entre
+            opções salgadas, doces, tradicionais e especiais. Em breve, todos os
+            sabores estarão disponíveis aqui no cardápio online.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default async function CardapioPage() {
   const [categories, products] = await Promise.all([
     getMenuCategories(),
@@ -149,6 +184,8 @@ export default async function CardapioPage() {
             deixar seu pedido ainda mais gostoso.
           </p>
         </div>
+
+        <PizzaFlavorsBanner />
 
         {sections.length === 0 ? (
           <div className="mt-12 rounded-3xl bg-white p-8 text-center shadow-sm ring-1 ring-[#6f1018]/10">
