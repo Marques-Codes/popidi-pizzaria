@@ -20,15 +20,15 @@ type Differential = {
 const differentials: Differential[] = [
   {
     icon: Flame,
-    title: "Pizza feita com carinho",
+    title: "Pizzas e esfirras feitas com carinho",
     description:
-      "Cada pizza é preparada com atenção, sabor marcante e aquele cuidado que faz diferença no pedido.",
+      "Cada pedido é preparado com atenção, sabor marcante e aquele cuidado que faz diferença.",
   },
   {
     icon: BadgeCheck,
     title: "Ingredientes selecionados",
     description:
-      "Usamos ingredientes pensados para entregar uma pizza saborosa, bonita e bem recheada.",
+      "Usamos ingredientes pensados para entregar pizzas e esfirras saborosas, bonitas e bem recheadas.",
   },
   {
     icon: Clock3,
@@ -44,33 +44,33 @@ const differentials: Differential[] = [
   },
   {
     icon: MapPin,
-    title: "Feita em Arapongas",
+    title: "Atendimento próximo",
     description:
-      "Uma pizzaria local, com identidade própria e atendimento próximo para a cidade de Arapongas.",
+      "Uma marca com identidade própria, atendimento cuidadoso e foco em entregar uma boa experiência.",
   },
   {
     icon: Gift,
     title: "Experiência completa",
     description:
-      "Além da pizza, queremos entregar uma experiência gostosa, simples e memorável.",
+      "Além do sabor, queremos entregar uma experiência gostosa, simples e memorável em cada pedido.",
   },
   {
     icon: Pizza,
     title: "Cardápio variado",
     description:
-      "Pizzas salgadas, doces e opções para todos os gostos.",
+      "Pizzas, esfirras, bebidas, combos e opções para diferentes momentos e gostos.",
   },
   {
     icon: Utensils,
-    title: "Rodízio e esfihas",
+    title: "Rodízio e esfirras",
     description:
-      "Uma experiência completa para aproveitar com família e amigos.",
+      "Uma experiência completa para aproveitar com família, amigos e quem gosta de variedade.",
   },
   {
     icon: Bike,
     title: "Delivery",
     description:
-      "Peça sua pizza e aproveite o sabor da Popidi em casa.",
+      "Peça sua pizza ou esfirra e aproveite o sabor da Popidi onde estiver.",
   },
 ];
 
@@ -88,8 +88,8 @@ export function DifferentialsSection() {
           </h2>
 
           <p className="mt-6 text-lg leading-8 text-[#76524a]">
-            O que torna a Popidi Pizzaria uma escolha especial para quem ama uma
-            boa pizza em Arapongas.
+            O que torna a Popidi Delivery uma escolha especial para quem ama
+            pizzas, esfirras e uma experiência completa.
           </p>
         </div>
 
