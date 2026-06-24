@@ -12,25 +12,25 @@ const storyCards: StoryCard[] = [
     icon: UsersRound,
     title: "Quem Somos",
     description:
-      "Uma pizzaria de Arapongas feita para quem ama pizza, bons momentos e atendimento próximo.",
+      "Uma marca feita para quem ama pizzas, esfirras, bons momentos e atendimento próximo.",
   },
   {
     icon: Pizza,
     title: "O Que Fazemos",
     description:
-      "Preparamos pizzas salgadas, doces, combos e bebidas com sabor marcante e ingredientes selecionados.",
+      "Preparamos pizzas, esfirras, combos e bebidas com sabor marcante e ingredientes selecionados.",
   },
   {
     icon: Heart,
     title: "Como Fazemos",
     description:
-      "Cada pizza é preparada com cuidado, massa saborosa, recheio generoso e aquele toque especial da Popidi.",
+      "Cada pedido é preparado com cuidado, massa saborosa, recheio generoso e aquele toque especial da Popidi.",
   },
   {
     icon: Sparkles,
     title: "Por Que Fazemos",
     description:
-      "Para transformar pedidos simples em momentos especiais ao redor de uma boa pizza.",
+      "Para transformar pedidos simples em momentos especiais com pizzas e esfirras bem preparadas.",
   },
 ];
 
@@ -88,11 +88,11 @@ export function StorySection() {
 
         <div className="mx-auto mt-20 max-w-3xl text-center">
           <p className="font-serif text-3xl italic leading-tight text-[#5a2a2f] md:text-4xl">
-            “Cada pizza que fazemos carrega o sabor de um bom momento.”
+            “Cada pedido carrega o sabor de um bom momento.”
           </p>
 
           <p className="mt-5 text-sm font-bold text-[#d79a22]">
-            — Popidi Pizzaria
+            — Popidi Delivery
           </p>
         </div>
       </div>

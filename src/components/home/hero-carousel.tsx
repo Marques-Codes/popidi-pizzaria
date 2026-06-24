@@ -87,7 +87,7 @@ export function HeroCarousel({ slides: initialSlides }: HeroCarouselProps) {
         </h1>
 
         <p className="mt-5 max-w-2xl text-base leading-8 text-white/90 md:text-xl">
-          Pizzas salgadas, doces, combos e bebidas preparados para transformar
+          Pizzas salgadas, doces, esfirras, combos e bebidas preparados para transformar
           qualquer momento em uma boa lembrança.
         </p>
 
