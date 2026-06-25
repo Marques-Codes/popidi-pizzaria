@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Bike, MousePointerClick, Pizza } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -84,15 +85,43 @@ export function OrderStepsSection() {
           })}
         </div>
 
-        <div className="mt-12 text-center">
-          <a
-            href={orderUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex rounded-md bg-[#e5393f] px-8 py-4 text-sm font-bold text-white transition hover:bg-yellow-400 hover:text-[#220305]"
-          >
-            Fazer pedido agora
-          </a>
+        <div className="mt-14 overflow-hidden rounded-3xl bg-[#3a0a0f] shadow-sm ring-1 ring-[#6f1018]/10">
+          <div className="relative h-[360px] md:h-[460px]">
+            <Image
+              src="/images/home/order-experience.png"
+              alt="Pizza preparada com queijo derretido e forno ao fundo"
+              fill
+              sizes="100vw"
+              className="object-cover"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-black/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+            <div className="absolute bottom-0 left-0 max-w-3xl p-7 text-white md:p-10">
+              <p className="text-sm font-bold uppercase tracking-[0.28em] text-yellow-300">
+                Preparado com carinho
+              </p>
+
+              <h3 className="mt-4 font-serif text-4xl font-bold leading-tight md:text-5xl">
+                Sabor, qualidade e aquele cuidado em cada pedido
+              </h3>
+
+              <p className="mt-5 max-w-2xl text-base leading-8 text-white/85">
+                Da escolha dos sabores ao momento de aproveitar, a Popidi busca
+                entregar uma experiência gostosa, prática e especial.
+              </p>
+
+              <a
+                href={orderUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-7 inline-flex rounded-md bg-[#e5393f] px-8 py-4 text-sm font-bold text-white transition hover:bg-yellow-400 hover:text-[#220305]"
+              >
+                Fazer pedido agora
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
