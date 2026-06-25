@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SiteHeader } from "@/components/site-header";
 import {
   getChildCategories,
@@ -73,32 +74,42 @@ function getSectionDescription(parentName: string, childName?: string) {
 
 function PizzaFlavorsBanner() {
   return (
-    <section className="mt-12 overflow-hidden rounded-3xl bg-[#6f1018] px-6 py-10 text-white shadow-sm ring-1 ring-[#6f1018]/10 md:px-10 md:py-12">
-      <div className="grid items-center gap-8 md:grid-cols-[0.8fr_1.2fr]">
-        <div className="text-center md:text-left">
-          <p className="text-sm font-bold uppercase tracking-[0.32em] text-yellow-300">
-            Variedade de sabores
-          </p>
-
-          <h2 className="mt-4 font-serif text-6xl font-bold leading-none text-white md:text-7xl">
-            +73
-          </h2>
-
-          <p className="mt-2 text-xl font-bold uppercase tracking-[0.18em] text-white">
-            sabores de pizza
-          </p>
+    <section className="mt-12 overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-[#6f1018]/10">
+      <div className="grid items-center gap-8 p-6 md:grid-cols-[0.9fr_1.1fr] md:p-10">
+        <div className="flex justify-center rounded-2xl bg-[#fff7ed] px-6 py-8 ring-1 ring-[#6f1018]/10">
+          <Image
+            src="/images/cardapio/73-sabores.png"
+            alt="Mais de 73 sabores de pizza"
+            width={900}
+            height={260}
+            className="h-auto w-full max-w-xl object-contain"
+            priority
+          />
         </div>
 
         <div className="text-center md:text-left">
-          <h3 className="font-serif text-3xl font-bold leading-tight text-white md:text-4xl">
-            Um cardápio preparado para todos os gostos
-          </h3>
+          <p className="text-sm font-bold uppercase tracking-[0.32em] text-[#b51f2b]">
+            Variedade de verdade
+          </p>
 
-          <p className="mt-4 max-w-3xl text-base leading-8 text-white/85">
+          <h2 className="mt-4 font-serif text-4xl font-bold leading-tight text-[#3a0a0f] md:text-5xl">
+            Um cardápio preparado para todos os gostos
+          </h2>
+
+          <p className="mt-5 max-w-3xl text-base leading-8 text-[#76524a]">
             A Popidi conta com uma grande variedade de sabores de pizza, entre
             opções salgadas, doces, tradicionais e especiais. Em breve, todos os
             sabores estarão disponíveis aqui no cardápio online.
           </p>
+
+          <a
+            href="https://pratodigital.com.br/pizzariapopidi/#/&s=4akMkWVkuI"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-7 inline-flex rounded-md bg-[#e5393f] px-7 py-4 text-sm font-bold text-white transition hover:bg-yellow-400 hover:text-[#220305]"
+          >
+            Fazer pedido
+          </a>
         </div>
       </div>
     </section>
