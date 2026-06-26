@@ -28,6 +28,18 @@ function normalizeParentId(value: FormDataEntryValue | null) {
 function revalidateMenuCategoryPages() {
   revalidatePath("/admin/cardapio");
   revalidatePath("/admin/cardapio/categorias");
+  revalidatePath("/admin/cardapio/produtos");
+  revalidatePath("/cardapio");
+  revalidatePath("/");
+}
+
+function isForeignKeyProductsError(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+
+  return (
+    message.includes("menu_products_category_id_fkey") ||
+    message.includes("violates foreign key constraint")
+  );
 }
 
 export async function createMenuCategory(formData: FormData) {
@@ -102,7 +114,15 @@ export async function deleteMenuCategory(formData: FormData) {
     redirect("/admin/cardapio/categorias?error=has-children");
   }
 
-  await deleteMenuCategoryRecord(categoryId);
+  try {
+    await deleteMenuCategoryRecord(categoryId);
+  } catch (error) {
+    if (isForeignKeyProductsError(error)) {
+      redirect("/admin/cardapio/categorias?error=has-products");
+    }
+
+    redirect("/admin/cardapio/categorias?error=delete");
+  }
 
   revalidateMenuCategoryPages();
 
