@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, ImagePlus } from "lucide-react";
 import { createHeroCarouselSlide } from "../actions";
+import { PendingSubmitButton } from "@/components/admin/pending-submit-button";
 
 type NewCarouselImagePageProps = {
   searchParams: Promise<{

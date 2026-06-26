@@ -88,8 +88,8 @@ export function OrderStepsSection() {
         <div className="mt-14 overflow-hidden rounded-3xl bg-[#3a0a0f] shadow-sm ring-1 ring-[#6f1018]/10">
           <div className="relative h-[360px] md:h-[460px]">
             <Image
-              src="/images/home/order-experience.png"
-              alt="Pizza preparada com queijo derretido e forno ao fundo"
+              src="/images/home/products/pizza-margherita.jpg"
+              alt="Pizza da Popidi com queijo derretido"
               fill
               sizes="100vw"
               className="object-cover"
